@@ -974,6 +974,7 @@ public final class BuiltinMacros {
     public static let SUPPORTS_TEXT_BASED_API = BuiltinMacros.declareBooleanMacro("SUPPORTS_TEXT_BASED_API")
     public static let SWIFT_AUTOLINK_EXTRACT_OUTPUT_PATH = BuiltinMacros.declarePathMacro("SWIFT_AUTOLINK_EXTRACT_OUTPUT_PATH")
     public static let PLATFORM_REQUIRES_SWIFT_AUTOLINK_EXTRACT = BuiltinMacros.declareBooleanMacro("PLATFORM_REQUIRES_SWIFT_AUTOLINK_EXTRACT")
+    public static let PLATFORM_REQUIRES_SWIFT_MODULEWRAP = BuiltinMacros.declareBooleanMacro("PLATFORM_REQUIRES_SWIFT_MODULEWRAP")
     public static let SWIFT_ABI_CHECKER_BASELINE_DIR = BuiltinMacros.declareStringMacro("SWIFT_ABI_CHECKER_BASELINE_DIR")
     public static let SWIFT_ABI_CHECKER_EXCEPTIONS_FILE = BuiltinMacros.declareStringMacro("SWIFT_ABI_CHECKER_EXCEPTIONS_FILE")
     public static let SWIFT_ABI_GENERATION_TOOL_OUTPUT_DIR = BuiltinMacros.declareStringMacro("SWIFT_ABI_GENERATION_TOOL_OUTPUT_DIR")
@@ -2124,6 +2125,7 @@ public final class BuiltinMacros {
         SUPPORTS_TEXT_BASED_API,
         SWIFT_AUTOLINK_EXTRACT_OUTPUT_PATH,
         PLATFORM_REQUIRES_SWIFT_AUTOLINK_EXTRACT,
+        PLATFORM_REQUIRES_SWIFT_MODULEWRAP,
         SWIFT_ABI_CHECKER_BASELINE_DIR,
         SWIFT_ABI_CHECKER_EXCEPTIONS_FILE,
         SWIFT_ABI_GENERATION_TOOL_OUTPUT_DIR,
