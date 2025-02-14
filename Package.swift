@@ -105,7 +105,7 @@ let package = Package(
                 "SWBBuildSystem",
                 "SWBServiceCore",
                 "SWBTaskExecution",
-                .product(name: "SystemPackage", package: "swift-system", condition: .when(platforms: [.linux, .android, .windows])),
+                .product(name: "SystemPackage", package: "swift-system", condition: .when(platforms: [.linux, .openbsd, .android, .windows, .custom("freebsd")])),
             ],
             exclude: ["CMakeLists.txt"],
             swiftSettings: swiftSettings(languageMode: .v5)),
@@ -197,8 +197,8 @@ let package = Package(
                 "SWBCSupport",
                 "SWBLibc",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .product(name: "Crypto", package: "swift-crypto", condition: .when(platforms: [.linux, .android])),
-                .product(name: "SystemPackage", package: "swift-system", condition: .when(platforms: [.linux, .android, .windows])),
+                .product(name: "Crypto", package: "swift-crypto", condition: .when(platforms: [.linux, .openbsd, .android, .custom("freebsd")])),
+                .product(name: "SystemPackage", package: "swift-system", condition: .when(platforms: [.linux, .openbsd, .android, .windows, .custom("freebsd")])),
             ],
             exclude: ["CMakeLists.txt"],
             swiftSettings: swiftSettings(languageMode: .v5)),
@@ -442,12 +442,20 @@ if useLocalDependencies {
         package.dependencies +=  [.package(path: "../llbuild"),]
     }
 } else {
+    #if os(FreeBSD)
     package.dependencies += [
-        // https://github.com/apple/swift-crypto/issues/262
-        // 3.7.1 introduced a regression which fails to link on aarch64-windows; revert to <4.0.0 for the upper bound when this is fixed
-        .package(url: "https://github.com/apple/swift-crypto.git", "2.0.0"..<"3.7.1"),
-        .package(url: "https://github.com/apple/swift-driver.git", branch: "main"),
+        // https://github.com/apple/swift-system/commit/4fa2a719c5d225fc763f21f2d341c0c8d825d65e is not yet in a tag
+        .package(url: "https://github.com/apple/swift-system.git", branch: "main"),
+    ]
+    #else    
+    package.dependencies += [
         .package(url: "https://github.com/apple/swift-system.git", .upToNextMajor(from: "1.4.0")),
+    ]
+    #endif
+
+    package.dependencies += [
+        .package(url: "https://github.com/apple/swift-crypto.git", "2.0.0"..<"4.0.0"),
+        .package(url: "https://github.com/apple/swift-driver.git", branch: "main"),
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.0.3"),
     ]
     if !useLLBuildFramework {

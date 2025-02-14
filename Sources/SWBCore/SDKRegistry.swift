@@ -747,7 +747,7 @@ public final class SDKRegistry: SDKRegistryLookup, CustomStringConvertible, Send
     private func fallbackSystemSDKSettings(operatingSystem: OperatingSystem) throws -> [String: PropertyListItem] {
         let defaultProperties: [String: PropertyListItem]
         switch operatingSystem {
-        case .linux:
+        case .linux, .freebsd:
             defaultProperties = [
                 // Workaround to avoid `-add_ast_path` on Linux, apparently this needs to perform some "swift modulewrap" step instead.
                 "GCC_GENERATE_DEBUGGING_SYMBOLS": .plString("NO"),
