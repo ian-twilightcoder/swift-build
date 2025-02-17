@@ -115,6 +115,7 @@ public final class Toolchain: Hashable, Sendable {
             if path.fileExtension != "xctoolchain" && operatingSystem == .windows {
                 // Windows toolchains do not have any metadata files that define a version, so the version needs to be derived from the path.
                 // Use the directory name to scrape the semantic version from.
+                print("entering windows fallback for \(path)")
                 let pattern = #/^(?<major>0|[1-9][0-9]*)\.(?<minor>0|[1-9][0-9]*)\.(?<patch>0|[1-9][0-9]*)(-(0|[1-9A-Za-z-][0-9A-Za-z-]*)(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$/#
                 guard let match = try pattern.wholeMatch(in: path.basename) else {
                     throw StubError.error("Unable to extract version from toolchain directory name in \(path.str)")
@@ -136,6 +137,7 @@ public final class Toolchain: Hashable, Sendable {
             }
         }
 
+        print("got data for \(path)")
         // The data should always be a dictionary.
         guard case .plDict(let items) = data else {
             throw StubError.error("expected dictionary in toolchain data")
@@ -461,6 +463,7 @@ public final class ToolchainRegistry: @unchecked Sendable {
             guard toolchainPath.basenameWithoutSuffix != "swift-latest" else { continue }
 
             do {
+                print("loading at \(toolchainPath)")
                 let toolchain = try await Toolchain(toolchainPath, operatingSystem: operatingSystem, fs: fs, pluginManager: delegate.pluginManager)
                 try register(toolchain)
             } catch let err {
