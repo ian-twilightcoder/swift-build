@@ -143,6 +143,8 @@ public final class Toolchain: Hashable, Sendable {
             throw StubError.error("expected dictionary in toolchain data")
         }
 
+        print("got items for \(path)")
+
         // Extract the identifier.
         let identifier: String
         if case .plString(let toolchainIdentifier)? = items["Identifier"] {
@@ -152,6 +154,8 @@ public final class Toolchain: Hashable, Sendable {
         } else {
             throw StubError.error("invalid or missing 'Identifier' field")
         }
+
+        print("got identifier for \(path)")
 
         // Display name
         let displayName: String
@@ -171,6 +175,8 @@ public final class Toolchain: Hashable, Sendable {
             displayName = Toolchain.deriveDisplayName(identifier: identifier)
         }
 
+        print("got display name for \(path)")
+
         // Version
         let version: Version
         if let infoVersion = items["Version"] {
@@ -189,6 +195,8 @@ public final class Toolchain: Hashable, Sendable {
             // No version specified in the plist, so we derive the version from the identifier.
             version = Toolchain.deriveVersion(identifier: identifier)
         }
+
+        print("got version for \(path)")
 
         // Aliases
         var aliases = Set<String>()
@@ -210,6 +218,8 @@ public final class Toolchain: Hashable, Sendable {
             // No aliases specified in the plist, so we derive them from the identifier.
             aliases = Toolchain.deriveAliases(path: path, identifier: identifier)
         }
+
+        print("got aliases for \(path)")
 
         // Framework Search Paths
         var frameworkSearchPaths = Array<String>()
@@ -288,6 +298,8 @@ public final class Toolchain: Hashable, Sendable {
             path.join("usr").join("local").join("bin"),
             path.join("usr").join("libexec")
         ])
+
+        print("almsot done for \(path)")
 
         // Construct the toolchain
         self.init(identifier, displayName, version, aliases, path, frameworkSearchPaths, librarySearchPaths, defaultSettings, overrideSettings, defaultSettingsWhenPrimary, executableSearchPaths: executableSearchPaths, fs: fs)
