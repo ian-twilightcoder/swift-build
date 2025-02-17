@@ -97,6 +97,7 @@ public final class Toolchain: Hashable, Sendable {
             paths: librarySearchPaths,
             fs: fs
         )
+        print("toolchain: \(self)")
     }
 
     convenience init(_ path: Path, operatingSystem: OperatingSystem, fs: any FSProxy, pluginManager: PluginManager) async throws {
