@@ -507,8 +507,16 @@ public final class ToolchainRegistry: @unchecked Sendable {
     /// Look up the toolchain with the given identifier.
     public func lookup(_ identifier: String) -> Toolchain? {
         let lowercasedIdentifier = identifier.lowercased()
-        let identifier = ["default", "xcode"].contains(lowercasedIdentifier) ? ToolchainRegistry.defaultToolchainIdentifier : identifier
-        return toolchainsByIdentifier[identifier] ?? toolchainsByAlias[lowercasedIdentifier]
+        if ["default", "xcode"].contains(lowercasedIdentifier) {
+            #if canImport(Darwin)
+            return toolchainsByIdentifier[ToolchainRegistry.defaultToolchainIdentifier] ?? toolchainsByAlias[lowercasedIdentifier]
+            #else
+            // On non-Darwin, assume if there is only one registered toolchain, it is the default.
+            return toolchainsByIdentifier[ToolchainRegistry.defaultToolchainIdentifier] ?? toolchainsByAlias[lowercasedIdentifier] ?? toolchainsByIdentifier.values.only
+            #endif
+        } else {
+            return toolchainsByIdentifier[identifier] ?? toolchainsByAlias[lowercasedIdentifier]
+        }
     }
 
     public var defaultToolchain: Toolchain? {
