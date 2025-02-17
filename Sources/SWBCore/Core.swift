@@ -63,6 +63,7 @@ public final class Core: Sendable {
                         return nil
                     }
                     resolvedDeveloperPath = swiftPath.str
+                    print("resolved developer path is \(resolvedDeveloperPath)")
                 } else {
                     resolvedDeveloperPath = "/"
                 }

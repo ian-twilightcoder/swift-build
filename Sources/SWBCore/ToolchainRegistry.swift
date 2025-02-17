@@ -402,7 +402,7 @@ public final class ToolchainRegistry: @unchecked Sendable {
 
     @_spi(Testing) public init(delegate: any ToolchainRegistryDelegate, searchPaths: [(Path, strict: Bool)], fs: any FSProxy, hostOperatingSystem: OperatingSystem) async {
         self.fs = fs
-
+        print("toolchains earch paths are \(searchPaths)")
         for (path, strict) in searchPaths {
             if !strict && !fs.exists(path) {
                 continue
